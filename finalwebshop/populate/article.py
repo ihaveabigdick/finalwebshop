@@ -1,4 +1,5 @@
 from populate import base
+from django.contrib.auth.models import User
 from article.models import Article, Comment
 
 
@@ -10,6 +11,7 @@ def populate():
     print('Populating Article and Comment ... ', end='')
     Article.objects.all().delete()
     Comment.objects.all().delete()
+    admin = User.objects.first()
     for title in titles:
         article = Article()
         article.title = title

@@ -5,6 +5,7 @@ from django.db.models.query_utils import Q
 from article.models import Article, Comment
 from article.forms import ArticleForm
 
+
 def article(request):
     '''
     Render the article page
@@ -17,6 +18,7 @@ def article(request):
         itemList.append(items)
     context = {'itemList':itemList}
     return render(request, 'article/article.html', context)
+
 
 def articleCreate(request):
     '''
@@ -35,6 +37,7 @@ def articleCreate(request):
     articleForm.save()
     messages.success(request, '貼文成功')
     return redirect('article:article')
+
 
 def articleRead(request, articleId):
     '''
@@ -73,6 +76,7 @@ def articleUpdate(request, articleId):
     messages.success(request, '文章已修改') 
     return redirect('article:articleRead', articleId=articleId)
 
+
 def articleDelete(request, articleId):
     '''
     Delete the article instance:
@@ -87,6 +91,7 @@ def articleDelete(request, articleId):
     messages.success(request, '文章已刪除')  
     return redirect('article:article')
 
+
 def articleSearch(request):
     '''
     Search for articles:
@@ -98,4 +103,80 @@ def articleSearch(request):
                                       Q(content__icontains=searchTerm))
     context = {'articles':articles, 'searchTerm':searchTerm} 
     return render(request, 'article/articleSearch.html', context)
+
+
+def articleLike(request, articleId):
+    '''
+    Add the user to the 'likes' field:
+        1. Get the article; redirect to 404 if not found
+        2. If the user does not exist in the "likes" field, add him/her
+        3. Finally, call articleRead() function to render the article
+    '''
+    article = get_object_or_404(Article, id=articleId)
+    if request.user not in article.likes.all():
+        article.likes.add(request.user)
+    return articleRead(request, articleId)
+
+
+def commentCreate(request, articleId):
+    '''
+    Create a comment for an article:
+        1. Get the "comment" from the HTML form
+        2. Store it to database
+    '''
+    if request.method == 'GET':
+        return articleRead(request, articleId)
+    # POST
+    comment = request.POST.get('comment')
+    if comment:
+        comment = comment.strip()
+    if not comment:
+        return redirect('article:articleRead', articleId=articleId)
+    article = get_object_or_404(Article, id=articleId)
+    Comment.objects.create(article=article, user=request.user, content=comment)
+    return redirect('article:articleRead', articleId=articleId)
+
+
+def commentUpdate(request, commentId):
+    '''
+    Update a comment:
+        1. Get the comment to update and its article; redirect to 404 if not found
+        2. If comment is empty, delete the comment
+        3. Else update the comment
+    '''
+    commentToUpdate = get_object_or_404(Comment, id=commentId)
+    article = get_object_or_404(Article, id=commentToUpdate.article.id)
+    if request.method == 'GET':
+        return articleRead(request, article.id)
+
+    # POST    
+    if commentToUpdate.user != request.user:
+        messages.error(request, '無修改權限')
+        return articleRead(request, article.id)
+    comment = request.POST.get('comment', '').strip()
+    if not comment:
+        commentToUpdate.delete()
+    else:
+        commentToUpdate.content = comment
+        commentToUpdate.save()
+    return redirect('article:articleRead', articleId=article.id)
+
+
+def commentDelete(request, commentId):
+    '''
+    Delete a comment:
+        1. Get the comment to update and its article; redirect to 404 if not found
+        2. Delete the comment
+    '''
+    comment = get_object_or_404(Comment, id=commentId)
+    article = get_object_or_404(Article, id=comment.article.id)
+    if request.method == 'GET':
+        return articleRead(request, article.id)
+
+    # POST
+    if comment.user != request.user:
+        messages.error(request, '無刪除權限')
+        return articleRead(request, article.id)
+    comment.delete()
+    return redirect('article:articleRead', articleId=article.id)
 # Create your views here.
