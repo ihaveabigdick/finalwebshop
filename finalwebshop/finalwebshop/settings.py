@@ -134,5 +134,4 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/account/login/'
 
-# For Heroku deployment
-STATIC_ROOT = 'staticfiles'
+

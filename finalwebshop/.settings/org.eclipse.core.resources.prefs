@@ -1,4 +1,7 @@
 eclipse.preferences.version=1
+encoding//account/migrations/0001_initial.py=utf-8
 encoding//article/migrations/0001_initial.py=utf-8
 encoding//article/migrations/0002_auto_20180117_1430.py=utf-8
 encoding//article/migrations/0003_auto_20180117_1434.py=utf-8
+encoding//article/migrations/0004_article_likes.py=utf-8
+encoding//article/migrations/0005_comment_user.py=utf-8

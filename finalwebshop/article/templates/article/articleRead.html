@@ -13,10 +13,13 @@
     <div class="articleContent">{{ article.content|linebreaks }}</div>
      <p class=like>
       <img id=like src="{% static 'big/img/like.png' %}" alt="Like"> {{ article.likes.count }}
-      {% if user.is_authenticated %}
+      {% if user not in article.likes.all %}
         <a href="{% url 'article:articleLike' article.id %}">讚</a>
+      {% else %}
+        <a href="{% url 'article:articleLike' article.id %}">回收讚</a>
       {% endif %}
     </p>
+     
     {% for comment in comments %}
       <div class="commentDiv">
         <span class="commentAuthor">{{ comment.user.profile.fullName }}</span>

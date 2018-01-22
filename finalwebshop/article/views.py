@@ -24,7 +24,7 @@ def article(request):
     return render(request, 'article/article.html', context)
 
 
-@admin_required
+@login_required
 def articleCreate(request):
     '''
     Create a new article instance
@@ -123,7 +123,10 @@ def articleLike(request, articleId):
     article = get_object_or_404(Article, id=articleId)
     if request.user not in article.likes.all():
         article.likes.add(request.user)
+    else:
+        article.likes.remove(request.user)
     return articleRead(request, articleId)
+
 
 
 @login_required

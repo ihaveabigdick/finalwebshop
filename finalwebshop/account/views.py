@@ -58,7 +58,7 @@ def login(request):
     if nextURL:
         return redirect(nextURL)
     messages.success(request, '登入成功')
-    return redirect('main:main')
+    return redirect('article:article')
 
 
 @login_required
@@ -68,5 +68,5 @@ def logout(request):
     '''
     auth_logout(request)
     messages.success(request, '歡迎再度光臨')
-    return redirect('main:main')    
+    return redirect('article:article')    
 # Create your views here.

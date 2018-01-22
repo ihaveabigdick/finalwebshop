@@ -28,8 +28,8 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    fullName = forms.CharField(label='姓名', max_length=128)
-    website = forms.URLField(label='個人網址', max_length=128)
+    fullName = forms.CharField(label='寵物名', max_length=128)
+    website = forms.CharField(label='個人網址', max_length=128)
     address = forms.CharField(label='住址', max_length=128)
 
     class Meta:

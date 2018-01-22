@@ -10,16 +10,23 @@ body {
 }
 
 ul#menu {
-  margin-bottom: 30px;
-  text-align: middle;
+  margin-bottom: 50px;
+  text-align: center;  
+  font-size: 30px;
+  font-color: black;
+  border: thin solid gray;
+  padding: 0.5em 1em;
+  background: linear-gradient(#f7f7f7, #dedede);
 }
 
 ul#menu li {
   display: inline-block;
+  
+  
 }
 /* Button */
 .btn {
-	font-family: Arial;
+  font-family: Arial;
   display: inline-block;
   color: black;
   font-size: 0.8em;
@@ -47,3 +54,4 @@ ul#menu li {
 .inlineBlock {
   display: inline-block;
 }
+

@@ -5,15 +5,34 @@
 {% endblock %}
 {% block heading %}發問區{% endblock %}
 {% block content %}
+     {% if user.is_authenticated %} 
+       {% else %}
+      <form method="post" action="{% url 'account:login' %}">
+      {% csrf_token %}
+      <table border="1" style="border:3px #cccccc solid;"  valign="top" bgcolor="e0e0e0">
+<tr>
+<td>
+      <p>使用者名稱：<input type="text" name="username"></p>
+      <p>密碼：<input type="password" name="password"></p>
+      <p><input type="submit" value="送出"></p>
+</td>
+    </form>
+    </tr>
+</table>
+    {% endif %}
+    搜尋文章
     <form class="inlineBlock" action="{% url 'article:articleSearch' %}">
       <input type="text" name="searchTerm">
       <input class="btn" type="submit" value="查詢">
-    </form>
-    {% if user.is_superuser %}
+    </form>   
+    {% if user.is_authenticated %}
     <p class="inlineBlock"><a class=btn href="{% url 'article:articleCreate' %}">發表文章</a></p>
     {% endif %}
     <br><br><hr>
-    
+    <form method="post" action="{% url 'account:login' %}">
+ 
+
+  
     {% for items in itemList %}
       {% for item in items %}
         {% if forloop.first %}
@@ -28,13 +47,7 @@
           <div class="articleContent">{{ item.content|linebreaks|truncatechars_html:30 }}</div>
           <p class=like>
           <img id=like src="{% static 'big/img/like.png' %}" alt="Like"> {{ item.likes.count }}
-        </p>
-        {% else %}
-          <div class="commentDiv">
-            <span class="commentAuthor">{{ item.user.profile.fullName }}</span>
-            <span class="comment">{{ item.content }}</span><br>
-            <span class="commentTime">{{ item.pubDateTime|date:'m月d日 H:i' }}</span>
-          </div>
+        
         {% endif %}
       {% endfor %}
       <hr>
