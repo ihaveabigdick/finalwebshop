@@ -163,7 +163,7 @@ def commentUpdate(request, commentId):
         return articleRead(request, article.id)
 
     # POST    
-    if commentToUpdate.user != request.user:
+    if commentToUpdate.user != request.user and commentToUpdate.user != request.user.is_superuser :            
         messages.error(request, '無修改權限')
         return articleRead(request, article.id)
     comment = request.POST.get('comment', '').strip()
@@ -188,7 +188,7 @@ def commentDelete(request, commentId):
         return articleRead(request, article.id)
 
     # POST
-    if comment.user != request.user:
+    if comment.user != request.user and comment.user != request.user.is_superuser :
         messages.error(request, '無刪除權限')
         return articleRead(request, article.id)
     comment.delete()

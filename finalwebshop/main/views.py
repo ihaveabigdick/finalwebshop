@@ -8,7 +8,7 @@ def main(request):
     '''
     Render the main page
     '''
-    context = {'fuck':'我幹破你娘'}
+    context = {'tirkey':'hahaha'}
     return render(request, 'main/main.html', context)
 
 def about(request):

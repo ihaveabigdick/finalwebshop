@@ -5,6 +5,7 @@
 {% endblock %}
 {% block heading %}閱讀文章{% endblock %}
 {% block content %}
+<div  style="font-family:monospace;border:3px #ccc solid;padding:30px;background-color:#FFECC9;border-radius:40px;";>
     <h3 class="inlineBlock">{{ article.title }}</h3>
     {% if user.is_superuser %}
      <a class="btn inlineBlock" href="{% url 'article:articleUpdate' article.id %}">修改</a>
@@ -19,10 +20,23 @@
         <a href="{% url 'article:articleLike' article.id %}">回收讚</a>
       {% endif %}
     </p>
-     
+ <div  style="font-family:space;border:3px #ccc solid;padding:5px;background-color:#e9e9e9;border-radius:20px;margin-left:0px;">    
     {% for comment in comments %}
       <div class="commentDiv">
         <span class="commentAuthor">{{ comment.user.profile.fullName }}</span>
+        
+        {% if user.is_superuser %}
+        <form class="inlineBlock" method="post" action="{% url 'article:commentUpdate' comment.id %}">
+            {% csrf_token %}
+            <input type="text" name="comment" value="{{ comment.content }}">
+            <input class="btn" type="submit" value="修改">
+          </form>
+          <form class="inlineBlock" method="post" action="{% url 'article:commentDelete' comment.id %}">
+            {% csrf_token %}
+            <input class="btn deleteConfirm" type="submit" value="刪除">
+          </form>
+         {% endif %} 
+          
         {% if comment.user != user %}
         <span class="comment">{{ comment.content }}</span><br>
         {% else %}
@@ -41,12 +55,15 @@
     {% endfor %}
     {% if user.is_authenticated %}
       <br>
+      </div>
       <form method="post" action="{% url 'article:commentCreate' article.id %}">
         {% csrf_token %}
         <input type="text" name="comment"  placeholder="留言 ...">
         <input class="btn" type="submit" value="送出">
       </form>
       <br><br>
+      
+      </div>
     {% endif %}
 {% endblock %}
 {% block script %}

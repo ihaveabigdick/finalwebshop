@@ -7,7 +7,7 @@
 {% block content %}
 <form class="inlineBlock" action="{% url 'article:articleSearch' %}">
   <input type="text" name="searchTerm" {% if searchTerm %}value="{{ searchTerm }}"{% endif %}>
-  <input class="btn" type="submit" value="查詢">
+  <input  style="width:64px;height:37px;background-image:url('http://yltang.net/static/tutorial/img/search.png')";  type="submit" value="">
 </form>
 <br><br><hr>
 {% if not articles %}

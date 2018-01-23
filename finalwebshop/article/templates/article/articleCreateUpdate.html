@@ -11,7 +11,7 @@
   {% endif %}
 {% endblock %}
 {% block content %}
-    {% if articleForm.instance.id %}
+<div  style="font-family:monospace;border:3px #ccc solid;padding:30px;background-color:#e9e9e9;border-radius:40px;";>    {% if articleForm.instance.id %}
       <form method="post" action="{% url 'article:articleUpdate' articleForm.instance.id %}">
     {% else %}
     <form method="post" action="{% url 'article:articleCreate' %}">
@@ -21,4 +21,6 @@
       <input class="btn" type="submit" value="發表">
       <a class="btn" href="{% url 'article:article' %}">放棄</a>
     </form>
+    </form>
+    </div>
 {% endblock %}
